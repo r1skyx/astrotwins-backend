@@ -1,0 +1,15 @@
+GET http://localhost:8000/api/users/Roz
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm96IiwiaWF0IjoxNjYzOTU2ODI5fQ.a-McyfTgSeD_VeuTizpNaP1srj_mjhs_6gux0znrbsA
+
+{
+
+}
+
+###
+
+GET http://localhost:8000/api/Roz
+Content-Type: application/json
+
+{
+    "name": "Roz"
+}
