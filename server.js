@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const router = express.Router();
+
 const app = express();
+
 const options = {
 	user: "root",
 	pass: "rootpassword",
@@ -11,10 +14,12 @@ const db = mongoose.connection;
 
 db.once("open", () => console.log("connected"));
 
-const userRoutes = require("./routes/users");
+const signsRoutes = require("./routes/api/signs");
+const userRoutes = require("./routes/api/users");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/api", userRoutes);
+app.use("/api", signsRoutes);
 
 app.listen(8000, () => console.log("DB CONNECT"));
