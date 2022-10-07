@@ -17,7 +17,15 @@ const SignSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-	name: {
+	dateCreated: {
+		type: Date,
+		required: true,
+	},
+	birthday: {
+		type: Date,
+		required: true,
+	},
+	username: {
 		type: String,
 		required: true,
 	},
@@ -33,6 +41,7 @@ const userSchema = new mongoose.Schema({
 		type: SignSchema,
 		required: true,
 	},
+	friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "Friends" }],
 });
 
 module.exports = mongoose.model("User", userSchema);

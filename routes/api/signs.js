@@ -3,7 +3,7 @@ const router = express.Router();
 require("dotenv").config();
 const swisseph = require("swisseph");
 
-router.post("/signs-calculator", (req, res) => {
+router.get("/signs-calculator", (req, res) => {
 	if (req.headers.allow !== process.env.SIGNS_API_KEY) {
 		res.send("Wrong API Key");
 	}
@@ -33,7 +33,7 @@ router.post("/signs-calculator", (req, res) => {
 		"Virgo",
 		"Libra",
 		"Scorpio",
-		"Saggitarius",
+		"Sagittarius",
 		"Capricorn",
 		"Aquarius",
 		"Pisces",
@@ -106,7 +106,6 @@ router.post("/signs-calculator", (req, res) => {
 			});
 		}
 	);
-
 	function findSign(deg) {
 		if (deg < 30) {
 			return signs[1];
