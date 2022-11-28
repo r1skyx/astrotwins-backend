@@ -1,4 +1,4 @@
-GET http://localhost:8000/api/users/Roz
+GET http://localhost:8000/api/users/632dad781d750b5f2e841ca4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm96IiwiaWF0IjoxNjYzOTU2ODI5fQ.a-McyfTgSeD_VeuTizpNaP1srj_mjhs_6gux0znrbsA
 
 {
@@ -7,9 +7,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm96Iiwia
 
 ###
 
-GET http://localhost:8000/api/Roz
-Content-Type: application/json
+GET http://localhost:8000/api/users/632dad781d750b5f2e841ca4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm96IiwiaWF0IjoxNjYzOTU2ODI5fQ.a-McyfTgSeD_VeuTizpNaP1srj_mjhs_6gux0znrbsA
 
 {
-    "name": "Roz"
+    
 }

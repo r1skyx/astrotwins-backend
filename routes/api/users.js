@@ -1,4 +1,6 @@
 const express = require("express");
+const authorize = require("../../middleware/authorize");
+const friendStatus = require("../../middleware/friendStatus");
 const user = require("../../models/user");
 const router = express.Router();
 const User = require("../../models/user");
@@ -16,16 +18,14 @@ router.get("/users", async (req, res) => {
 	}
 });
 
-router.get("/users/:firebaseUID", async (req, res) => {
+router.get("/users/:id", authorize, friendStatus, async (req, res) => {
 	try {
-		const users = await User.find();
+		const users = await User.findById(req.params.id);
 		// if (req.user == null) {
 		// 	let user = await User.one(req.params._id);
 		// 	return res.json(user);
 		// }
-		res.json(
-			users.filter((user) => user.firebaseUID === req.params.firebaseUID)
-		);
+		res.json(users);
 	} catch (e) {
 		res.status(500).json({ message: "user not found" });
 	}
@@ -67,42 +67,4 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-//MIDDLEWARE
-
-async function getUser(req, res, next) {
-	let user;
-	try {
-		user = await User.findById(req.params.id);
-		if (user == null) {
-			return res.status(404).json({ message: "cannot find user" });
-		}
-	} catch (err) {}
-
-	res.user = user;
-	next();
-}
-
-function authenticateToken(req, res, next) {
-	const authHeader = req.headers["authorization"];
-	const token = authHeader && authHeader.split(" ")[1];
-	if (token == null) return res.status(401);
-
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-		if (err) return res.json({ message: "AUTHORIZATION ERROR" });
-		req.user = user;
-		next();
-	});
-}
-
-// function authenticateToken(req, res, next) {
-// 	//const authHeader = req.headers["authorization"];
-// 	const token = req.cookies.jwt;
-// 	if (token == null) return res.status(401);
-
-// 	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-// 		if (err) return res.json({ message: "AUTHORIZATION ERROR" });
-// 		req.user = user;
-// 		next();
-// 	});
-// }
 module.exports = router;

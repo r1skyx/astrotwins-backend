@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const SignSchema = new mongoose.Schema({
 	sun: {
 		type: String,
@@ -41,7 +40,9 @@ const userSchema = new mongoose.Schema({
 		type: SignSchema,
 		required: true,
 	},
-	friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "Friends" }],
+	friends: [
+		{ type: mongoose.Schema.Types.ObjectId, ref: "Friends", unique: true },
+	],
 });
 
 module.exports = mongoose.model("User", userSchema);
