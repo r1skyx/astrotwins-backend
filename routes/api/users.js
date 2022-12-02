@@ -11,25 +11,30 @@ const jwt = require("jsonwebtoken");
 
 router.get("/users", async (req, res) => {
 	try {
-		const users = await User.find().select("username signs firebaseUID email");
+		const users = await User.find().select(
+			"_id username signs firebaseUID email"
+		);
 		res.json(users);
 	} catch (e) {
 		res.status(500).json({ message: e.message });
 	}
 });
 
-router.get("/users/:id", authorize, friendStatus, async (req, res) => {
-	try {
-		const users = await User.findById(req.params.id);
-		// if (req.user == null) {
-		// 	let user = await User.one(req.params._id);
-		// 	return res.json(user);
-		// }
-		res.json(users);
-	} catch (e) {
-		res.status(500).json({ message: "user not found" });
+router.get(
+	"/users/:id/:currentUser?",
+	authorize,
+	friendStatus,
+	async (req, res) => {
+		try {
+			const users = await User.findById(req.params.id);
+			// if (req.user == null) {
+			// 	let user = await User.one(req.params._id);
+			// }
+		} catch (e) {
+			res.sendStatus(500).json({ message: e });
+		}
 	}
-});
+);
 
 router.post("/signup", async (req, res) => {
 	const user = new User({
@@ -50,19 +55,23 @@ router.post("/signup", async (req, res) => {
 			newUser.toJSON(),
 			process.env.ACCESS_TOKEN_SECRET
 		);
-		res.json({ accessToken: accessToken });
+		console.log(user._id);
+		res.json({ accessToken: accessToken, id: user._id });
 	} catch (e) {
 		res.json({ message: e.message });
 	}
 });
 
 router.post("/login", async (req, res) => {
-	const user = { firebaseUID: req.body.firebaseUID };
+	let userData;
+
 	try {
-		const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-		res.json({ accessToken: accessToken });
+		let user = await User.findOne({ firebaseUID: req.body.firebaseUID }).exec();
+		const userId = user._id.toString();
+		console.log(userId);
+		const accessToken = jwt.sign(userId, process.env.ACCESS_TOKEN_SECRET);
+		res.json({ accessToken: accessToken, id: userId });
 	} catch (e) {
-		authenticateToken;
 		res.json({ message: e.message });
 	}
 });

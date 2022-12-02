@@ -152,4 +152,23 @@ router.patch("/friends/reject/:id", authorize, async (req, res) => {
 		message: "Request rejected successfully",
 	});
 });
+
+// Return friend requests
+router.get("/friends/requests", authorize, async (req, res) => {
+	let user = await User.findById(req.body.user);
+	let friendsList = user.friends;
+	let friendReqs = [];
+	if (friendsList) {
+		//Check if friend request has already been sent
+		for (let friend of friendsList) {
+			friend = await Friends.findById(friend);
+			if (friend.status === 2) {
+				friend = await User.findById(friend.recipient).select("username signs");
+				friendReqs.push(friend);
+			}
+		}
+	}
+	res.json(friendReqs);
+});
+
 module.exports = router;
